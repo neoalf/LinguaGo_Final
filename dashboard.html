@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LinguaGo | Mis Cursos</title>
+
+  <link rel="stylesheet" href="assets/fonts/googlefonts/montserrat.css">
+  <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="lg-dashboard-body">
+  <!-- HEADER -->
+  <header class="lg-header">
+    <div class="lg-header-left">
+      <button class="lg-hamburger" id="js-hamburger">
+        <span class="lg-hamburger-line"></span>
+        <span class="lg-hamburger-line"></span>
+        <span class="lg-hamburger-line"></span>
+      </button>
+      <nav class="lg-nav-overlay" id="js-nav">
+        <ul class="lg-nav-list">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="dashboard.html">Perfil</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="lg-logo-mini">
+      <img src="assets/img/LinguaGo logo - Edited.png" alt="LinguaGo logo">
+    </div>
+
+    <div class="lg-header-right">
+      <input type="text" class="lg-search" placeholder="🔍 Búsqueda">
+    </div>
+  </header>
+
+    <!-- PANEL LATERAL DEL USUARIO -->
+    <aside id="lg-user-panel">
+        <img id="lg-user-avatar" src="assets/img/default-avatar-profile-icon.jpg" alt="Avatar usuario">
+
+        <h3 id="lg-user-name">Usuario</h3>
+
+        <p class="lg-user-level">
+            Nivel: <span id="lg-user-level">—</span>
+        </p>
+
+        <p class="lg-user-progress-text">
+            Progreso total:
+        </p>
+
+        <div class="lg-user-progress-bar">
+            <div id="lg-user-progress" class="lg-user-progress"></div>
+        </div>
+
+        <a href="profile.html" class="lg-user-btn">Ver mi perfil</a>
+    </aside>
+
+  <!-- CONTENIDO -->
+  <main class="lg-dashboard-main">
+    <section class="lg-dashboard-banner">
+      <img src="assets/img/Welcome-Banner-School-International-Language.jpg" alt="Bienvenido" class="lg-dashboard-banner-img">
+      <div class="lg-dashboard-banner-text">
+        <h2 id="lg-username">Bienvenido, estudiante</h2>
+        <p>Explora tus cursos y sigue avanzando en tu aprendizaje.</p>
+      </div>
+    </section>
+
+    <!-- Filtros -->
+    <div class="lg-dashboard-filters">
+      <button class="lg-filter-btn active">Principiante</button>
+      <button class="lg-filter-btn">Intermedio</button>
+      <button class="lg-filter-btn">Avanzado</button>
+      <button class="lg-filter-btn">Experto</button>
+      <button class="lg-filter-btn">Documentos</button>
+    </div>
+
+    <!-- LISTADO DE CURSOS -->
+    <section class="lg-course-list" id="courseList"></section>
+
+    <div class="lg-logout">
+      <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="lg-footer">
+    <p class="lg-footer-copy">&copy; 2025. UNCSM</p>
+    <div class="lg-footer-socials">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
+  <script src="js/core.js"></script>
+  <script src="js/dashboard.js"></script>
+
+  <!-- Contenedor global de notificaciones -->
+<div id="toast-container" class="linguago-toast-container"></div>
+
+</body>
+</html>

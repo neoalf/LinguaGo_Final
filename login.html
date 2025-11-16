@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LinguaGo | Iniciar Sesión</title>
+
+  <!-- Fuentes locales -->
+  <link rel="stylesheet" href="assets/fonts/googlefonts/montserrat.css">
+  <link rel="stylesheet" href="assets/fonts/googlefonts/rubik.css">
+
+  <!-- Font Awesome local -->
+  <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css">
+
+  <!-- Estilos principales -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="lg-login-body">
+
+  <!-- Header (reutilizado) -->
+  <header class="lg-header">
+    <button class="lg-hamburger" aria-label="Abrir menú" id="js-hamburger">
+      <span class="lg-hamburger-line"></span>
+      <span class="lg-hamburger-line"></span>
+      <span class="lg-hamburger-line"></span>
+    </button>
+
+    <nav class="lg-nav-overlay" id="js-nav">
+      <ul class="lg-nav-list">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="#">Cursos</a></li>
+        <li><a href="#">Nosotros</a></li>
+      </ul>
+    </nav>
+
+    
+  </header>
+
+  <!-- MAIN -->
+  <main class="lg-login-main">
+
+    <!-- Imagen izquierda -->
+    <div class="lg-login-image">
+      <img src="assets/img/Estudiante.png" alt="Estudiante LinguaGo">
+    </div>
+
+    <!-- Formulario -->
+    <section class="lg-login-card">
+      <h2 class="lg-login-title">Iniciar Sesión</h2>
+      <p class="lg-login-sub">Ingresa con tu dirección de correo y contraseña.</p>
+
+      <form class="lg-login-form" id="loginForm">
+        <label for="email">Dirección de correo</label>
+        <div class="lg-input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="email" placeholder="correo@direccion.com" required>
+        </div>
+
+        <label for="password">Contraseña</label>
+        <div class="lg-input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="********" required>
+          <i class="fas fa-eye lg-toggle-pass" id="togglePass"></i>
+        </div>
+
+        <div class="lg-login-options">
+          <a href="#" class="lg-link">¿Olvidaste la contraseña?</a>
+        </div>
+
+        <button type="submit" class="lg-login-btn">Log in</button>
+
+        <div class="lg-remember">
+          <input type="checkbox" id="remember">
+          <label for="remember">Recuérdame</label>
+        </div>
+
+        <button type="button" class="lg-google-btn">
+          <i class="fab fa-google"></i> Inicia sesión con Google
+        </button>
+
+        <p class="lg-register-text">
+          ¿No tienes una cuenta? <a href="#">Regístrate aquí</a>
+        </p>
+      </form>
+    </section>
+
+    <!-- Imagen derecha -->
+    <div class="lg-login-illustration">
+      <img src="assets/img/blog-cultura - Edited.png" alt="LinguaGo Login">
+      <div class="lg-login-logo">
+        <img src="assets/img/LinguaGo logo - Edited.png" alt="LinguaGo Logo">
+        </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="lg-footer">
+    <p class="lg-footer-copy">&copy; 2025. UNCSM</p>
+    <div class="lg-footer-socials">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
+
+  <script src="js/core.js"></script>
+  <script src="js/login.js"></script>
+  
+
+  <!-- Contenedor global de notificaciones -->
+<div id="toast-container" class="linguago-toast-container"></div>
+
+</body>
+</html>

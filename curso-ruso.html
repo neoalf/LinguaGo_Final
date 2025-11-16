@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LinguaGo | Curso de Ruso</title>
+
+  <link rel="stylesheet" href="assets/fonts/googlefonts/montserrat.css">
+  <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="lg-course-body">
+
+  <!-- HEADER -->
+  <header class="lg-header">
+    <div class="lg-header-left">
+      <button class="lg-hamburger" id="js-hamburger">
+        <span class="lg-hamburger-line"></span>
+        <span class="lg-hamburger-line"></span>
+        <span class="lg-hamburger-line"></span>
+      </button>
+      <nav class="lg-nav-overlay" id="js-nav">
+        <ul class="lg-nav-list">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="dashboard.html">Perfil</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="lg-logo-mini">
+      <img src="assets/img/LinguaGo logo - Edited.png" alt="LinguaGo logo">
+      <h1>LinguaGo</h1>
+    </div>
+
+    <div class="lg-header-right">
+      <input type="text" class="lg-search" placeholder="🔍 Búsqueda">
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="lg-course-main">
+    <section class="lg-course-banner">
+      <img src="assets/img/russia-national-day-banner-anniversary.jpg" alt="Banner Ruso" class="lg-course-banner-img">
+      <h2 class="lg-course-title">Curso de Ruso - Nivel Inicial</h2>
+    </section>
+
+    <section class="lg-course-video">
+      <h3 class="lg-lesson-title">Lección 3 - El alfabeto cirílico <em>(Изучаем русский алфавит)</em></h3>
+      <video id="lessonVideo" controls preload="metadata" poster="assets/img/russian teacher.jpg">
+        <source src="assets/video/ABECEDARIO RUSO.mp4" type="video/mp4">
+        Tu navegador no soporta video HTML5.
+      </video>
+    </section>
+
+    <div class="lg-course-progress">
+      <label>Progreso:</label>
+      <div class="lg-progress">
+        <div class="lg-progress-bar" id="progressBar" style="width:0%;"></div>
+      </div>
+      <span id="progressValue">0%</span>
+    </div>
+
+    <section class="lg-lesson-info">
+      <h3>Resumen de la Lección</h3>
+      <p>Aprenderás el alfabeto cirílico y cómo pronunciar cada letra correctamente.</p>
+      <ul>
+        <li>Alfabeto ruso: А, Б, В, Г, Д, Е, Ж...</li>
+        <li>Pronunciación fonética con ejemplos comunes.</li>
+        <li>Consejos para recordar sonidos similares al español.</li>
+      </ul>
+
+      <blockquote>
+        “Здравствуйте! (Zdravstvuyte) — ¡Hola! Bienvenido a tu primera clase de ruso.”
+      </blockquote>
+
+      <p>Practica repitiendo el video hasta familiarizarte con los sonidos básicos.</p>
+    </section>
+
+    <div class="lg-course-actions">
+      <a href="dashboard.html" class="lg-btn-back">
+        <i class="fas fa-arrow-left"></i> Volver al Dashboard
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="lg-footer">
+    <p class="lg-footer-copy">&copy; 2025. UNCSM</p>
+    <div class="lg-footer-socials">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
+  <!-- Contenedor global de notificaciones -->
+<div id="toast-container" class="linguago-toast-container"></div>
+
+
+  <script src="js/core.js"></script>
+  <script src="js/curso.js"></script>
+</body>
+</html>

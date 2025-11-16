@@ -1,0 +1,37 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "demo@linguago.com",
+      "password": "12345",
+      "name": "Demo User",
+      "country": "Nicaragua",
+      "avatar": "assets/img/default-user.png",
+      "english": 10,
+      "french": 5,
+      "russian": 0
+    },
+    {
+      "id": 2,
+      "email": "ana@linguago.com",
+      "password": "lingua2025",
+      "name": "Ana Juárez",
+      "country": "Costa Rica",
+      "avatar": "assets/img/Ana-Juarez.png",
+      "english": 55,
+      "french": 20,
+      "russian": 0
+    },
+    {
+      "id": 3,
+      "name": "Mario Quintanilla",
+      "email": "pruebaderegistro@gmail.com",
+      "password": "12345678",
+      "country": "Nicaragua",
+      "avatar": "assets/img/default-user.png",
+      "english": 0,
+      "french": 0,
+      "russian": 0
+    }
+  ]
+}

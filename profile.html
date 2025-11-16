@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil – LinguaGo</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="profile-basic.js"></script>
+</head>
+
+<body class="lg-body">
+
+  <!-- ENCABEZADO DEL PERFIL -->
+  <header class="lg-profile-header">
+    <h1 class="lg-profile-title">Mi Perfil</h1>
+    <a href="dashboard.html" class="lg-back-dashboard">← Regresar al Dashboard</a>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <section class="lg-profile-basic-container">
+
+    <div class="lg-profile-card">
+
+      <img id="profileAvatar" class="lg-profile-avatar" src="assets/img/default-avatar-profile-icon.jpg" alt="Avatar Usuario">
+
+      <h2 id="profileName" class="lg-profile-name">Nombre del usuario</h2>
+      <p id="profileEmail" class="lg-profile-email">correo@ejemplo.com</p>
+      <p id="profileCountry" class="lg-profile-country">País: —</p>
+
+      <hr class="lg-profile-separator">
+
+      <h3 class="lg-progress-title">Progreso General</h3>
+
+      <div class="lg-progress-bar">
+        <div id="profileProgress" class="lg-progress-fill" style="width: 0%"></div>
+      </div>
+      <p id="profileProgressText" class="lg-progress-text">0% completado</p>
+
+      <button id="logoutBtn" class="lg-btn-logout">Cerrar Sesión</button>
+
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="lg-footer">
+    <p class="lg-footer-copy">&copy; 2025. UNCSM</p>
+    <div class="lg-footer-socials">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+  </footer>
+
+  <script src="js/core.js"></script>
+  <script src="js/profile.js"></script>
+
+</body>
+</html>
