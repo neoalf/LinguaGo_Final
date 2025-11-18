@@ -3,21 +3,32 @@
    Dashboard con progreso persistente en localStorage
    ============================================================ */
 
-// Simulación de API base
+// API base del sistema (útil si luego se usa un backend real)
 const API_BASE = `${LinguaGo.API_BASE || ""}`;
 
-// Elementos principales
+// Elementos principales del DOM
 const userNameEl = document.getElementById("lg-username");
 const courseListEl = document.getElementById("courseList");
 const logoutBtn = document.getElementById("logoutBtn");
 
-//  Verificar sesión
+
+// ============================================================
+// VERIFICAR SESIÓN DEL USUARIO
+// Si no hay sesión, no se permite entrar al dashboard
+// ============================================================
+
 let user = JSON.parse(localStorage.getItem("linguagoUser"));
 if (!user) {
   window.location.href = "login.html";
 } else {
-  userNameEl.textContent = `¡Bienvenido, ${user.name}!`;
+  userNameEl.textContent = `¡Bienvenido, ${user.name}!`;  // Saludo inicial
 }
+
+
+// ============================================================
+// CARGA DE DATOS DEL USUARIO AL CARGAR EL DOM
+// Rellena avatar, nombre, nivel y barra general de progreso
+// ============================================================
 
 document.addEventListener("DOMContentLoaded", () => {
   const user = JSON.parse(localStorage.getItem("linguagoUser"));
@@ -27,28 +38,33 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Cargar nombre
+  // Mostrar nombre
   document.getElementById("lg-user-name").textContent = user.name;
 
-  // Cargar nivel (si no existe, mostrar “Principiante”)
+  // Mostrar nivel del usuario (o principiante si no existe)
   document.getElementById("lg-user-level").textContent =
     user.level || "Principiante";
 
-  // Avatar (si el user acepta imagen más adelante)
+  // Avatar por defecto si no existe uno guardado
   document.getElementById("lg-user-avatar").src =
     user.avatar || "assets/img/default-avatar.png";
 
-  // Progreso total (promedio de los cursos)
+  // Calcular progreso general como promedio de los tres cursos
   const progress =
     (Number(user.progressEnglish || 0) +
       Number(user.progressFrench || 0) +
-      Number(user.progressRussian || 0)) /
-    3;
+      Number(user.progressRussian || 0)) / 3;
 
+  // Actualizar barra de progreso
   document.getElementById("lg-user-progress").style.width = progress + "%";
 });
 
-//  Datos iniciales de cursos
+
+// ============================================================
+// DATOS PREDEFINIDOS DE CURSOS MOSTRADOS EN EL DASHBOARD
+// (sirven como catálogo que siempre se renderiza)
+// ============================================================
+
 const defaultCourses = [
   {
     id: "english",
@@ -70,7 +86,12 @@ const defaultCourses = [
   }
 ];
 
-// Inicializar progreso si no existe
+
+// ============================================================
+// INICIALIZAR PROGRESO DEL USUARIO SI NO EXISTE
+// Esto asegura consistencia en nuevos usuarios
+// ============================================================
+
 if (!user.progress) {
   user.progress = {
     english: 0,
@@ -80,19 +101,28 @@ if (!user.progress) {
   localStorage.setItem("linguagoUser", JSON.stringify(user));
 }
 
-// Renderizar cursos
+
+// ============================================================
+// RENDERIZAR LA LISTA DE CURSOS EN EL DASHBOARD
+// Crea tarjetas dinámicas para cada curso con barra de progreso
+// ============================================================
+
 function renderCourses() {
-  courseListEl.innerHTML = "";
+  courseListEl.innerHTML = ""; // Limpiar lista previa
 
   defaultCourses.forEach(course => {
     const progress = user.progress[course.id] || 0;
 
+    // Crear tarjeta del curso
     const card = document.createElement("div");
     card.classList.add("lg-course-card");
 
+    // Contenido HTML dinámico
     card.innerHTML = `
       <div class="lg-course-text">
-        <div class="lg-progress"><div class="lg-progress-bar" style="width:${progress}%;"></div></div>
+        <div class="lg-progress">
+          <div class="lg-progress-bar" style="width:${progress}%;"></div>
+        </div>
         <h3>${course.title}</h3>
         <p>${course.desc}</p>
         <button class="lg-course-btn" data-id="${course.id}">
@@ -102,56 +132,55 @@ function renderCourses() {
       <img src="${course.img}" alt="${course.title}" class="lg-course-img">
     `;
 
+    // Añadir al dashboard
     courseListEl.appendChild(card);
   });
 
+  // Agregar listeners a los botones
   attachButtonEvents();
 }
 
-// Escuchar clicks en botones
+
+// ============================================================
+// MANEJAR CLICS EN LOS BOTONES DE LOS CURSOS
+// Cada clic aumenta el progreso +10% hasta 100%
+// ============================================================
+
 function attachButtonEvents() {
   document.querySelectorAll(".lg-course-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.id;
       let progress = user.progress[id] || 0;
 
+      // Si no está al 100%, incrementa progreso
       if (progress < 100) {
         progress = Math.min(100, progress + 10);
         user.progress[id] = progress;
+
+        // Guardar en localStorage
         localStorage.setItem("linguagoUser", JSON.stringify(user));
+
+        // Volver a renderizar tarjetas
         renderCourses();
 
-       
-
       } else {
+        // Si ya está completado
         LinguaGo.toast("¡Ya completaste este curso! 🎉");
       }
     });
   });
 }
 
-// Función opcional para sincronizar con backend
-async function syncProgressWithServer(userId, courseId, progress) {
-  try {
-    await fetch(`${API_BASE}/users/${userId}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        progress: { ...user.progress, [courseId]: progress }
-      })
-    });
-  } catch (err) {
-    console.warn("No se pudo sincronizar el progreso con el servidor:", err);
-  }
-}
+// CERRAR SESIÓN DESDE EL DASHBOARD
+// Limpia localStorage y vuelve a la página principal
 
-// Cerrar sesión
 logoutBtn.addEventListener("click", (e) => {
   e.preventDefault();
   localStorage.removeItem("linguagoUser");
   window.location.href = "index.html";
 });
 
-// Render inicial
+// RENDER INICIAL DEL DASHBOARD
 renderCourses();
+
 

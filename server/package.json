@@ -4,12 +4,12 @@
   "private": true,
   "description": "Servidor local para el proyecto LinguaGo con Express y JSON Server",
   "dependencies": {
+    "better-sqlite3": "^12.4.1",
     "cors": "^2.8.5",
-    "express": "^4.18.2",
+    "express": "^4.21.2",
     "json-server": "^0.17.3"
   },
   "scripts": {
     "start": "node server.js"
   }
 }
-

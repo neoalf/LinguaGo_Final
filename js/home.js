@@ -1,11 +1,14 @@
 /**
- Controla testimonios, carrusel de idiomas y botón volver arriba.
+ * Controla testimonios, carrusel de idiomas y botón volver arriba.
+ * Implementación con patrón MVC para mantener orden y separación de responsabilidades.
  */
 
 // ================== MODELO ==================
 const Model = (function() {
+  // Clave para almacenar datos en localStorage
   const STORAGE_KEY = "lg_data_v1";
 
+  // Estado inicial (primer uso de la app)
   const initialState = {
     testimonials: [
       {
@@ -29,6 +32,7 @@ const Model = (function() {
     ]
   };
 
+  // Carga estado desde localStorage o inicializa si no existe
   function load() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
@@ -37,13 +41,18 @@ const Model = (function() {
   }
 
   const state = load();
+
   return {
     getTestimonials: () => state.testimonials
   };
 })();
 
+
+
 // ================== VISTA ==================
 const View = (function() {
+
+  // Renderiza un testimonio dentro de un contenedor
   function renderTestimonial(container, data) {
     container.innerHTML = `
       <blockquote class="lg-test-quote">“${escapeHTML(data.quote)}”</blockquote>
@@ -58,6 +67,7 @@ const View = (function() {
     `;
   }
 
+  // Sanitiza texto para evitar inyección HTML (RNF12)
   function escapeHTML(str) {
     return str.replace(/[&<>"']/g, m => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
@@ -67,24 +77,28 @@ const View = (function() {
   return { renderTestimonial };
 })();
 
+
+
 // ================== CONTROLADOR ==================
 const Controller = (function(Model, View) {
-  const testimonials = Model.getTestimonials();
-  let current = 0;
 
+  const testimonials = Model.getTestimonials();
+  let current = 0; // Testimonio actual mostrado
+
+  // Función principal de inicialización
   function init() {
     const testCard = document.getElementById("js-test-card");
     const dotsContainer = document.getElementById("js-test-dots");
     const btnTop = document.getElementById("js-btn-top");
 
-    // Render inicial
+    // Render inicial del primer testimonio
     View.renderTestimonial(testCard, testimonials[current]);
     renderDots();
 
-    // Cambio automático de testimonios
+    // Cambio automático cada 5 segundos
     setInterval(() => nextTestimonial(), 5000);
 
-    // Evento click en dots
+    // Clic en los dots para cambiar testimonio
     dotsContainer.addEventListener("click", e => {
       if (e.target.classList.contains("lg-dot")) {
         current = Number(e.target.dataset.index);
@@ -92,7 +106,7 @@ const Controller = (function(Model, View) {
       }
     });
 
-    // Mostrar botón "Volver arriba"
+    // Mostrar / ocultar botón "Volver arriba"
     window.addEventListener("scroll", () => {
       if (window.scrollY > 300) btnTop.classList.add("show");
       else btnTop.classList.remove("show");
@@ -102,46 +116,48 @@ const Controller = (function(Model, View) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Carrusel de idiomas auto-scroll
+    // Auto-scroll del carrusel de idiomas
     autoScrollLanguages();
 
-// ===== Menú hamburguesa (overlay lateral) =====
-const hamburger = document.getElementById('js-hamburger');
-const nav = document.getElementById('js-nav');
 
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('active');
-  nav.classList.toggle('show');
-});
+    // ===== Menú hamburguesa (overlay lateral) =====
+    const hamburger = document.getElementById('js-hamburger');
+    const nav = document.getElementById('js-nav');
 
-// Cerrar menú al hacer clic en un enlace
-nav.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    nav.classList.remove('show');
-    hamburger.classList.remove('active');
-  });
-});
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      nav.classList.toggle('show');
+    });
 
-// ===== Botón "Iniciar ahora" =====
-const startBtn = document.getElementById("js-cta");
-if (startBtn) {
-  startBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "login.html";
-  });
-}
+    // Cerrar menú al seleccionar un enlace
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('show');
+        hamburger.classList.remove('active');
+      });
+    });
 
-// ===== Botones del carrusel de idiomas =====
-const langButtons = document.querySelectorAll(".lg-lang-btn");
-langButtons.forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "login.html";
-  });
-});
 
+    // ===== Llamada a la acción: "Iniciar ahora" =====
+    const startBtn = document.getElementById("js-cta");
+    if (startBtn) {
+      startBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.href = "login.html";
+      });
+    }
+
+    // ===== Botones del carrusel de idiomas =====
+    const langButtons = document.querySelectorAll(".lg-lang-btn");
+    langButtons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.href = "login.html";
+      });
+    });
   }
 
+  // Renderiza los botones de navegación (dots)
   function renderDots() {
     const dotsContainer = document.getElementById("js-test-dots");
     dotsContainer.innerHTML = "";
@@ -153,34 +169,48 @@ langButtons.forEach(btn => {
     });
   }
 
+  // Avanza al siguiente testimonio
   function nextTestimonial() {
     current = (current + 1) % testimonials.length;
     updateTestimonial();
   }
 
+  // Actualiza testimonio y estado visual de los dots
   function updateTestimonial() {
     const testCard = document.getElementById("js-test-card");
     const dots = document.querySelectorAll(".lg-dot");
+
     View.renderTestimonial(testCard, testimonials[current]);
+
     dots.forEach((d, i) =>
       d.classList.toggle("lg-dot--active", i === current)
     );
   }
 
-  // Carrusel de idiomas: desplazamiento automático suave
+  // Carrusel automático horizontal para tarjetas de idiomas
   function autoScrollLanguages() {
     const carousel = document.getElementById("js-lang-carousel");
     if (!carousel) return;
+
     let scrollPos = 0;
+
     setInterval(() => {
       scrollPos += 300;
-      if (scrollPos >= carousel.scrollWidth - carousel.clientWidth) scrollPos = 0;
+
+      // Reiniciar scroll al llegar al final
+      if (scrollPos >= carousel.scrollWidth - carousel.clientWidth) {
+        scrollPos = 0;
+      }
+
       carousel.scrollTo({ left: scrollPos, behavior: "smooth" });
     }, 4000);
   }
 
   return { init };
+
 })(Model, View);
 
+
 // ================== INICIO ==================
+// Se ejecuta al cargar la página
 document.addEventListener("DOMContentLoaded", Controller.init);
