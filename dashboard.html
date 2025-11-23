@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -31,37 +32,35 @@
     <div class="lg-logo-mini">
       <img src="assets/img/LinguaGo logo - Edited.png" alt="LinguaGo logo">
     </div>
-
-    <div class="lg-header-right">
-      <input type="text" class="lg-search" placeholder="🔍 Búsqueda">
-    </div>
   </header>
 
-    <!-- PANEL LATERAL DEL USUARIO -->
-    <aside id="lg-user-panel">
-        <img id="lg-user-avatar" src="assets/img/default-avatar-profile-icon.jpg" alt="Avatar usuario">
+  <!-- PANEL LATERAL DEL USUARIO -->
+  <aside id="lg-user-panel">
+    <img id="lg-user-avatar" src="assets/img/default-avatar-profile-icon.jpg" alt="Avatar usuario">
 
-        <h3 id="lg-user-name">Usuario</h3>
+    <h3 id="lg-user-name">Usuario</h3>
 
-        <p class="lg-user-level">
-            Nivel: <span id="lg-user-level">—</span>
-        </p>
+    <p class="lg-user-level">
+      Nivel: <span id="lg-user-level">—</span>
+    </p>
 
-        <p class="lg-user-progress-text">
-            Progreso total:
-        </p>
+    <p class="lg-user-progress-text">
+      Progreso total:
+    </p>
 
-        <div class="lg-user-progress-bar">
-            <div id="lg-user-progress" class="lg-user-progress"></div>
-        </div>
+    <div class="lg-user-progress-bar">
+      <div id="lg-user-progress" class="lg-user-progress"></div>
+    </div>
 
-        <a href="profile.html" class="lg-user-btn">Ver mi perfil</a>
-    </aside>
+    <a href="profile.html" class="lg-user-btn">Ver mi perfil</a>
+  </aside>
 
   <!-- CONTENIDO -->
   <main class="lg-dashboard-main">
-    <section class="lg-dashboard-banner">
-      <img src="assets/img/Welcome-Banner-School-International-Language.jpg" alt="Bienvenido" class="lg-dashboard-banner-img">
+    <section class="lg-dashboard-banner" id="welcomeBanner">
+      <button class="lg-banner-close" id="closeBannerBtn" aria-label="Cerrar">&times;</button>
+      <img src="assets/img/Welcome-Banner-School-International-Language.jpg" alt="Bienvenido"
+        class="lg-dashboard-banner-img">
       <div class="lg-dashboard-banner-text">
         <h2 id="lg-username">Bienvenido, estudiante</h2>
         <p>Explora tus cursos y sigue avanzando en tu aprendizaje.</p>
@@ -99,7 +98,8 @@
   <script src="js/dashboard.js"></script>
 
   <!-- Contenedor global de notificaciones -->
-<div id="toast-container" class="linguago-toast-container"></div>
+  <div id="toast-container" class="linguago-toast-container"></div>
 
 </body>
+
 </html>

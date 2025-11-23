@@ -1744,6 +1744,396 @@ body {
 .lg-btn-logout {
   margin-top: 1.8rem;
   padding: .7rem 1.2rem;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.linguago-reset-links {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.linguago-reset-links a {
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.linguago-reset-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .linguago-reset-container {
+    flex-direction: column;
+  }
+
+  .reset-eye {
+    max-width: 60%;
+    margin: 0 auto;
+  }
+}
+
+/* ============================================================
+   SISTEMA DE TOASTS - LINGUAGO
+   ============================================================ */
+.linguago-toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 9999;
+}
+
+.linguago-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 260px;
+  max-width: 360px;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateX(120%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s ease-out 3.5s forwards;
+}
+
+.linguago-toast i {
+  font-size: 1.2rem;
+}
+
+/* Colores según tipo */
+.toast-success {
+  background-color: #4caf50;
+}
+
+.toast-info {
+  background-color: #2196f3;
+}
+
+.toast-warning {
+  background-color: #ff9800;
+}
+
+.toast-error {
+  background-color: #f44336;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+
+/* ===========================
+   PERFIL DE USUARIO
+   =========================== */
+
+.lg-profile-header {
+  background: linear-gradient(to right, #d8eba8, #cbe7a4);
+  padding: 1.3rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.lg-profile-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.lg-back-dashboard {
+  font-size: 1.1rem;
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.lg-profile-basic-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.lg-profile-card {
+  background: #fff;
+  padding: 2.5rem;
+  width: 380px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.lg-profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.2rem;
+  border: 4px solid #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.lg-profile-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.lg-profile-email,
+.lg-profile-country {
+  color: #666;
+  margin-top: .3rem;
+}
+
+.lg-profile-separator {
+  margin: 1.5rem 0;
+  border: 0;
+  height: 1px;
+  background: #eee;
+}
+
+.lg-progress-title {
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.lg-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lg-progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.6s ease-in-out;
+}
+
+.lg-progress-text {
+  margin-top: .5rem;
+  font-size: .9rem;
+  color: #555;
+}
+
+.lg-btn-logout {
+  margin-top: 1.8rem;
+  padding: .7rem 1.2rem;
+  background: #e53935;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+}
+
+
+.linguago-reset-links a {
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.linguago-reset-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .linguago-reset-container {
+    flex-direction: column;
+  }
+
+  .reset-eye {
+    max-width: 60%;
+    margin: 0 auto;
+  }
+}
+
+/* ============================================================
+   SISTEMA DE TOASTS - LINGUAGO
+   ============================================================ */
+.linguago-toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 9999;
+}
+
+.linguago-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 260px;
+  max-width: 360px;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateX(120%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s ease-out 3.5s forwards;
+}
+
+.linguago-toast i {
+  font-size: 1.2rem;
+}
+
+/* Colores según tipo */
+.toast-success {
+  background-color: #4caf50;
+}
+
+.toast-info {
+  background-color: #2196f3;
+}
+
+.toast-warning {
+  background-color: #ff9800;
+}
+
+.toast-error {
+  background-color: #f44336;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+
+/* ===========================
+   PERFIL DE USUARIO
+   =========================== */
+
+.lg-profile-header {
+  background: linear-gradient(to right, #d8eba8, #cbe7a4);
+  padding: 1.3rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.lg-profile-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.lg-back-dashboard {
+  font-size: 1.1rem;
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.lg-profile-basic-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.lg-profile-card {
+  background: #fff;
+  padding: 2.5rem;
+  width: 380px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.lg-profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.2rem;
+  border: 4px solid #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.lg-profile-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.lg-profile-email,
+.lg-profile-country {
+  color: #666;
+  margin-top: .3rem;
+}
+
+.lg-profile-separator {
+  margin: 1.5rem 0;
+  border: 0;
+  height: 1px;
+  background: #eee;
+}
+
+.lg-progress-title {
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.lg-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lg-progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.6s ease-in-out;
+}
+
+.lg-progress-text {
+  margin-top: .5rem;
+  font-size: .9rem;
+  color: #555;
+}
+
+.lg-btn-logout {
+  margin-top: 1.8rem;
+  padding: .7rem 1.2rem;
   background: #e53935;
   color: white;
   border: none;
@@ -1755,4 +2145,248 @@ body {
 
 .lg-btn-logout:hover {
   background: #b71c1c;
+}
+
+/* Botón cerrar banner dashboard */
+.lg-banner-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ffffff;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================
+   SISTEMA DE TOASTS - LINGUAGO
+   ============================================================ */
+.linguago-toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  z-index: 9999;
+}
+
+.linguago-toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 260px;
+  max-width: 360px;
+  padding: 0.9rem 1.2rem;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateX(120%);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s ease-out 3.5s forwards;
+}
+
+.linguago-toast i {
+  font-size: 1.2rem;
+}
+
+/* Colores según tipo */
+.toast-success {
+  background-color: #4caf50;
+}
+
+.toast-info {
+  background-color: #2196f3;
+}
+
+.toast-warning {
+  background-color: #ff9800;
+}
+
+.toast-error {
+  background-color: #f44336;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+
+/* ===========================
+   PERFIL DE USUARIO
+   =========================== */
+
+.lg-profile-header {
+  background: linear-gradient(to right, #d8eba8, #cbe7a4);
+  padding: 1.3rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+.lg-profile-title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.lg-back-dashboard {
+  font-size: 1.1rem;
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.lg-profile-basic-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.lg-profile-card {
+  background: #fff;
+  padding: 2.5rem;
+  width: 380px;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.lg-profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.2rem;
+  border: 4px solid #ffffff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.lg-profile-name {
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.lg-profile-email,
+.lg-profile-country {
+  color: #666;
+  margin-top: .3rem;
+}
+
+.lg-profile-separator {
+  margin: 1.5rem 0;
+  border: 0;
+  height: 1px;
+  background: #eee;
+}
+
+.lg-progress-title {
+  font-weight: 700;
+  margin-bottom: .5rem;
+}
+
+.lg-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lg-progress-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.6s ease-in-out;
+}
+
+.lg-progress-text {
+  margin-top: .5rem;
+  font-size: .9rem;
+  color: #555;
+}
+
+.lg-btn-logout {
+  margin-top: 1.8rem;
+  padding: .7rem 1.2rem;
+  background: #e53935;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+}
+
+.lg-btn-logout:hover {
+  background: #b71c1c;
+}
+
+/* Botón cerrar banner dashboard */
+.lg-banner-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ffffff;
+  color: #333;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.lg-banner-close:hover {
+  background: #f0f0f0;
+  transform: scale(1.1);
+}
+
+/* Estilos para el texto del banner de bienvenida */
+.lg-dashboard-banner-text {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-width: 80%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+
+.lg-dashboard-banner-text h2 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.lg-dashboard-banner-text p {
+  color: #555;
 }

@@ -42,26 +42,44 @@ topBtn.addEventListener("click", () => {
 // Maneja el menú hamburguesa en pantallas pequeñas
 // ============================================================
 
-const hamburger = document.getElementById("js-hamburger");
-const nav = document.getElementById("js-nav");
-if (hamburger && nav) {
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("js-hamburger");
+  const nav = document.getElementById("js-nav");
 
-  // Alterna el menú cuando se hace clic al icono hamburguesa.
-  hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("active");
-    nav.classList.toggle("show");
-  });
-
-  // Cuando se hace clic en un enlace del menú:
-  // se cierra automáticamente (mejora UX).
-
-  nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("show");
-      hamburger.classList.remove("active");
+  if (hamburger && nav) {
+    // Alterna el menú cuando se hace clic al icono hamburguesa.
+    hamburger.addEventListener("click", (e) => {
+      e.stopPropagation(); // Evitar que el click se propague
+      hamburger.classList.toggle("active");
+      nav.classList.toggle("show");
     });
-  });
-}
+
+    // Cuando se hace clic en un enlace del menú:
+    // se cierra automáticamente (mejora UX).
+    nav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("show");
+        hamburger.classList.remove("active");
+      });
+    });
+
+    // Cerrar el menú al hacer clic fuera de él
+    document.addEventListener("click", (e) => {
+      // Si el menú está abierto y el clic no es dentro del nav ni del hamburger
+      if (nav.classList.contains("show")) {
+        if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+          nav.classList.remove("show");
+          hamburger.classList.remove("active");
+        }
+      }
+    });
+
+    // Prevenir que los clics dentro del nav cierren el menú
+    nav.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  }
+});
 
 
 // ============================================================
@@ -72,20 +90,20 @@ if (hamburger && nav) {
 // Obtiene el usuario actualmente autenticado desde localStorage.
 
 function getActiveUser() {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(localStorage.getItem("linguagoUser"));
 }
 
 
 // Guarda el usuario autenticado en localStorage.
 
 function setActiveUser(user) {
-  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("linguagoUser", JSON.stringify(user));
 }
 
 // Cierra sesión eliminando al usuario y redirigiendo al login.
 
 function logout() {
-  localStorage.removeItem("user");
+  localStorage.removeItem("linguagoUser");
   window.location.href = "login.html";
 }
 
@@ -97,7 +115,7 @@ function logout() {
 function verifySession() {
   const user = getActiveUser();
   if (!user) window.location.href = "login.html";     // Si no hay usuario, lo envía al login.
-  else console.log("Usuario activo:", user.email);    // Solo para debug
+  else console.log("Usuario activo:", user.email || user.name);    // Solo para debug
 }
 
 // ============================================================
