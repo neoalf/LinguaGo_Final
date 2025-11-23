@@ -81,3 +81,32 @@ if (regForm) {
     }
   });
 }
+
+// ============================================================
+// GOOGLE LOGIN HANDLER
+// ============================================================
+window.handleGoogleCredential = async function (response) {
+  try {
+    const res = await fetch(\\/auth/google\, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: response.credential })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      LinguaGo.toast(data.message || 'Error al iniciar sesión con Google');
+      return;
+    }
+
+    // Guardar usuario y redirigir
+    localStorage.setItem('linguagoUser', JSON.stringify(data));
+    LinguaGo.toast(\Bienvenido, \\);
+    window.location.href = 'dashboard.html';
+
+  } catch (err) {
+    console.error(err);
+    LinguaGo.toast('Error de conexión con Google Login');
+  }
+};

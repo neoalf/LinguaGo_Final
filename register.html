@@ -15,6 +15,9 @@
 
   <!-- Estilos principales -->
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body class="lg-register-body">
@@ -33,8 +36,6 @@
         <li><a href="about.html">Sobre Nosotros</a></li>
       </ul>
     </nav>
-
-
   </header>
 
   <!-- MAIN -->
@@ -49,9 +50,13 @@
     <section class="lg-register-card">
       <h2 class="lg-register-title">Crea tu cuenta</h2>
 
-      <button class="lg-google-btn">
-        <i class="fab fa-google"></i> Continuar con Google
-      </button>
+      <!-- Google Login -->
+      <div id="g_id_onload" data-client_id="1020252781524-ofd58tkv7rpuvles3odrlb3mltjpgrgb.apps.googleusercontent.com"
+        data-callback="handleGoogleCredential" data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="signup_with"
+        data-shape="rectangular" data-logo_alignment="left" data-width="100%">
+      </div>
 
       <div class="lg-divider-line">ó</div>
 
