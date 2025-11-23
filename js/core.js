@@ -102,9 +102,8 @@ function verifySession() {
 
 // ============================================================
 // RE-EXPORTAR FUNCIONES EN EL NAMESPACE Global
-// (esto sobrescribe accidentalmente window.LinguaGo si no existe 
-// el objeto API_BASE declarado arriba, pero mantenemos tu diseño)
 // ============================================================
+const API_BASE = "http://localhost:4000/api"; // Definir aquí para que esté disponible
 window.LinguaGo = { API_BASE, getActiveUser, setActiveUser, logout, verifySession };
 
 // ============================================================
@@ -128,12 +127,12 @@ LinguaGo.toast = function (message, type = "info") {
   const container = document.getElementById("toast-container");
   if (!container) return;
 
-// Crear elemento del toast.
+  // Crear elemento del toast.
 
   const toast = document.createElement("div");
   toast.classList.add("linguago-toast", `toast-${type}`);
 
-// Iconos por tipo de mensaje.
+  // Iconos por tipo de mensaje.
   const icons = {
     success: "fa-check-circle",
     info: "fa-info-circle",

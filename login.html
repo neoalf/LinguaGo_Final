@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -13,8 +14,28 @@
   <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css">
 
   <!-- Estilos principales -->
-  <link rel="stylesheet" href="styles.css">
-</head>
+  <!DOCTYPE html>
+  <html lang="es">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>LinguaGo | Iniciar Sesión</title>
+
+    <!-- Fuentes locales -->
+    <link rel="stylesheet" href="assets/fonts/googlefonts/montserrat.css">
+    <link rel="stylesheet" href="assets/fonts/googlefonts/rubik.css">
+
+    <!-- Font Awesome local -->
+    <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css">
+
+    <!-- Estilos principales -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+
 <body class="lg-login-body">
 
   <!-- Header (reutilizado) -->
@@ -25,20 +46,16 @@
       <span class="lg-hamburger-line"></span>
     </button>
 
+    <!-- MENÚ LATERAL RESPONSIVE -->
     <nav class="lg-nav-overlay" id="js-nav">
       <ul class="lg-nav-list">
         <li><a href="index.html">Inicio</a></li>
-        <li><a href="#">Cursos</a></li>
-        <li><a href="#">Nosotros</a></li>
+        <li><a href="about.html">Sobre Nosotros</a></li>
       </ul>
     </nav>
-
-    
   </header>
 
-  <!-- MAIN -->
   <main class="lg-login-main">
-
     <!-- Imagen izquierda -->
     <div class="lg-login-image">
       <img src="assets/img/Estudiante.png" alt="Estudiante LinguaGo">
@@ -74,12 +91,16 @@
           <label for="remember">Recuérdame</label>
         </div>
 
-        <button type="button" class="lg-google-btn">
-          <i class="fab fa-google"></i> Inicia sesión con Google
-        </button>
+        <!-- Google Login -->
+        <div id="g_id_onload" data-client_id="1020252781524-ofd58tkv7rpuvles3odrlb3mltjpgrgb.apps.googleusercontent.com"
+          data-callback="handleGoogleCredential" data-auto_prompt="false">
+        </div>
+        <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+          data-shape="rectangular" data-logo_alignment="left" data-width="100%">
+        </div>
 
         <p class="lg-register-text">
-          ¿No tienes una cuenta? <a href="#">Regístrate aquí</a>
+          ¿No tienes una cuenta? <a href="register.html">Regístrate aquí</a>
         </p>
       </form>
     </section>
@@ -89,7 +110,7 @@
       <img src="assets/img/blog-cultura - Edited.png" alt="LinguaGo Login">
       <div class="lg-login-logo">
         <img src="assets/img/LinguaGo logo - Edited.png" alt="LinguaGo Logo">
-        </div>
+      </div>
     </div>
 
   </main>
@@ -104,13 +125,12 @@
     </div>
   </footer>
 
-
   <script src="js/core.js"></script>
   <script src="js/login.js"></script>
-  
 
   <!-- Contenedor global de notificaciones -->
-<div id="toast-container" class="linguago-toast-container"></div>
+  <div id="toast-container" class="linguago-toast-container"></div>
 
 </body>
+
 </html>

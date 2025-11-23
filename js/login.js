@@ -38,42 +38,36 @@ if (loginForm) {
 
     try {
       // ============================================================
-      // CONSULTA AL SERVIDOR PARA BUSCAR EL USUARIO
-      // GET /users?email=<correo>
+      // CONSULTA AL SERVIDOR PARA INICIAR SESIÓN
+      // POST /api/login
       // ============================================================
-      const res = await fetch(`${LinguaGo.API_BASE}/users?email=${email}`);
-      const users = await res.json();
+      const res = await fetch(`${LinguaGo.API_BASE}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
 
-      // Si no existe ningún usuario con ese correo
-      if (users.length === 0) {
-        LinguaGo.toast("No existe una cuenta con ese correo.");
-        return;
-      }
+      const data = await res.json();
 
-      const user = users[0]; // Primer resultado encontrado
-
-      // ============================================================
-      // VALIDACIÓN DE CONTRASEÑA
-      // ============================================================
-      if (user.password !== password) {
-        LinguaGo.toast("Contraseña incorrecta.");
+      // Si hay error (usuario no encontrado o contraseña incorrecta)
+      if (!res.ok) {
+        LinguaGo.toast(data.message || "Error al iniciar sesión");
         return;
       }
 
       // ============================================================
       // INICIO DE SESIÓN EXITOSO
       // Guardamos al usuario completo en localStorage
-      // para mantener la sesión activa.
       // ============================================================
-      localStorage.setItem("linguagoUser", JSON.stringify(user));
+      localStorage.setItem("linguagoUser", JSON.stringify(data));
 
-      LinguaGo.toast(`Bienvenido de nuevo, ${user.name}`);
+      LinguaGo.toast(`Bienvenido de nuevo, ${data.name}`);
 
       // Redirigir al dashboard
       window.location.href = "dashboard.html";
 
     } catch (err) {
-      // Error en la comunicación con el servidor (JSON Server apagado, URL incorrecta, etc.)
+      // Error en la comunicación con el servidor
       console.error(err);
       LinguaGo.toast("Error al conectar con el servidor.");
     }
@@ -81,3 +75,32 @@ if (loginForm) {
 }
 
 
+
+// ============================================================
+// GOOGLE LOGIN HANDLER
+// ============================================================
+window.handleGoogleCredential = async function (response) {
+  try {
+    const res = await fetch(`${LinguaGo.API_BASE}/auth/google`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: response.credential })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      LinguaGo.toast(data.message || "Error al iniciar sesión con Google");
+      return;
+    }
+
+    // Guardar usuario y redirigir
+    localStorage.setItem("linguagoUser", JSON.stringify(data));
+    LinguaGo.toast(`Bienvenido, ${data.name}`);
+    window.location.href = "dashboard.html";
+
+  } catch (err) {
+    console.error(err);
+    LinguaGo.toast("Error de conexión con Google Login");
+  }
+};

@@ -160,6 +160,20 @@ function attachButtonEvents() {
         // Guardar en localStorage
         localStorage.setItem("linguagoUser", JSON.stringify(user));
 
+        // ============================================================
+        // ACTUALIZAR EN SERVIDOR
+        // PATCH /api/progress/:id
+        // ============================================================
+        fetch(`${LinguaGo.API_BASE}/progress/${user.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            progressEnglish: user.progress.english,
+            progressFrench: user.progress.french,
+            progressRussian: user.progress.russian
+          })
+        }).catch(err => console.error("Error guardando progreso:", err));
+
         // Volver a renderizar tarjetas
         renderCourses();
 
