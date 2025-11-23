@@ -4,7 +4,7 @@
  */
 
 // ================== MODELO ==================
-const Model = (function() {
+const Model = (function () {
   // Clave para almacenar datos en localStorage
   const STORAGE_KEY = "lg_data_v1";
 
@@ -50,7 +50,7 @@ const Model = (function() {
 
 
 // ================== VISTA ==================
-const View = (function() {
+const View = (function () {
 
   // Renderiza un testimonio dentro de un contenedor
   function renderTestimonial(container, data) {
@@ -80,7 +80,7 @@ const View = (function() {
 
 
 // ================== CONTROLADOR ==================
-const Controller = (function(Model, View) {
+const Controller = (function (Model, View) {
 
   const testimonials = Model.getTestimonials();
   let current = 0; // Testimonio actual mostrado
@@ -121,21 +121,8 @@ const Controller = (function(Model, View) {
 
 
     // ===== Menú hamburguesa (overlay lateral) =====
-    const hamburger = document.getElementById('js-hamburger');
-    const nav = document.getElementById('js-nav');
+    // Se maneja en core.js para todo el sitio.
 
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
-      nav.classList.toggle('show');
-    });
-
-    // Cerrar menú al seleccionar un enlace
-    nav.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('show');
-        hamburger.classList.remove('active');
-      });
-    });
 
 
     // ===== Llamada a la acción: "Iniciar ahora" =====
