@@ -87,7 +87,7 @@ if (regForm) {
 // ============================================================
 window.handleGoogleCredential = async function (response) {
   try {
-    const res = await fetch(\\/auth/google\, {
+    const res = await fetch(`${LinguaGo.API_BASE}/auth/google`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token: response.credential })
@@ -96,17 +96,17 @@ window.handleGoogleCredential = async function (response) {
     const data = await res.json();
 
     if (!res.ok) {
-      LinguaGo.toast(data.message || 'Error al iniciar sesión con Google');
+      LinguaGo.toast(data.message || 'Error al iniciar sesiÃ³n con Google');
       return;
     }
 
     // Guardar usuario y redirigir
     localStorage.setItem('linguagoUser', JSON.stringify(data));
-    LinguaGo.toast(\Bienvenido, \\);
+    LinguaGo.toast('Bienvenido, ' + data.name);
     window.location.href = 'dashboard.html';
 
   } catch (err) {
     console.error(err);
-    LinguaGo.toast('Error de conexión con Google Login');
+    LinguaGo.toast('Error de conexiÃ³n con Google Login');
   }
 };
