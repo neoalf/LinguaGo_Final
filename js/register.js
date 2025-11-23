@@ -86,6 +86,7 @@ if (regForm) {
 // GOOGLE LOGIN HANDLER
 // ============================================================
 window.handleGoogleCredential = async function (response) {
+  console.log("handleGoogleCredential llamado");
   try {
     const res = await fetch(`${LinguaGo.API_BASE}/auth/google`, {
       method: 'POST',
@@ -93,20 +94,29 @@ window.handleGoogleCredential = async function (response) {
       body: JSON.stringify({ token: response.credential })
     });
 
+    console.log("Respuesta del servidor:", res.status, res.statusText);
     const data = await res.json();
+    console.log("Datos recibidos:", data);
 
     if (!res.ok) {
+      console.log("Respuesta no OK, mostrando error");
       LinguaGo.toast(data.message || 'Error al iniciar sesión con Google');
       return;
     }
 
     // Guardar usuario y redirigir
+    console.log("Guardando usuario en localStorage");
     localStorage.setItem('linguagoUser', JSON.stringify(data));
+    console.log("Mostrando toast de bienvenida");
     LinguaGo.toast('Bienvenido, ' + data.name);
-    window.location.href = 'dashboard.html';
+    console.log("Redirigiendo a dashboard...");
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 500); // Pequeño delay para que se vea el toast
 
   } catch (err) {
-    console.error(err);
+    console.error("Error en handleGoogleCredential:", err);
     LinguaGo.toast('Error de conexión con Google Login');
   }
 };
+
