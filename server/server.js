@@ -226,6 +226,39 @@ app.post("/api/reset-password", async (req, res) => {
   }
 });
 
+// ===== ELIMINAR CUENTA DE USUARIO =====
+app.delete("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Verificar que el usuario existe
+    const userStmt = db.prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
+    const user = userStmt.get(id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Usuario no encontrado"
+      });
+    }
+
+    // Eliminar usuario
+    const deleteStmt = db.prepare("DELETE FROM users WHERE id = ?");
+    deleteStmt.run(id);
+
+    res.json({
+      success: true,
+      message: "Cuenta eliminada correctamente"
+    });
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error al eliminar la cuenta"
+    });
+  }
+});
+
 // Servir FRONTEND
 app.use(express.static("../"));
 

@@ -2593,3 +2593,33 @@ body {
     justify-content: center;
   }
 }
+
+/* ============================================================
+   BOTÓN ELIMINAR CUENTA
+   ============================================================ */
+.lg-btn-delete-account {
+  margin-top: 1rem;
+  padding: .7rem 1.2rem;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+}
+
+.lg-btn-delete-account:hover {
+  background: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+}
+
+.lg-btn-delete-account i {
+  font-size: 1rem;
+}

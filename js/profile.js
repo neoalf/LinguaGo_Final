@@ -186,3 +186,45 @@ logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("linguagoUser");
   window.location.href = "login.html";
 });
+
+// ============================================================
+// ELIMINAR CUENTA
+// Elimina permanentemente la cuenta del usuario
+// ============================================================
+
+const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+
+if (deleteAccountBtn) {
+  deleteAccountBtn.addEventListener("click", async () => {
+    const confirmDelete = confirm(
+      "Estás seguro de que deseas eliminar tu cuenta?\n\nEsta acción NO se puede deshacer y perderás todos tus datos de progreso."
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/users/${session.id}`, {
+        method: "DELETE"
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToast("Cuenta eliminada. Hasta pronto!", "info");
+
+        // Limpiar sesión
+        localStorage.removeItem("linguagoUser");
+
+        // Redirigir al login después de 2 segundos
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2000);
+      } else {
+        showToast(data.message || "Error al eliminar la cuenta", "error");
+      }
+    } catch (error) {
+      console.error("Error al eliminar cuenta:", error);
+      showToast("Error de conexión con el servidor", "error");
+    }
+  });
+}
