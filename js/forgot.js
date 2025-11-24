@@ -19,51 +19,34 @@ if (forgotForm) {
 
     // Validar que no esté vacío
     if (!email) {
-      LinguaGo.toast("Por favor, ingresa tu correo electrónico.");
+      showToast("Por favor, ingresa tu correo electrónico", "warning");
       return;
     }
 
     try {
-
       // ============================================================
-      // BÚSQUEDA DEL USUARIO EN JSON SERVER
-      // Consulta al backend para saber si el correo existe
-      // (GET /users?email=<correo>)
+      // BÚSQUEDA DEL USUARIO EN EL SERVIDOR SQLITE
+      // Nota: Como no tenemos un endpoint específico para verificar email,
+      // simulamos la verificación. En un sistema real, el servidor
+      // verificaría el email y enviaría un correo de recuperación.
       // ============================================================
-      const res = await fetch(`${LinguaGo.API_BASE}/users?email=${email}`);
-      const users = await res.json();
 
-      // Si no existe ninguna cuenta asociada
-      if (users.length === 0) {
-        LinguaGo.toast("No se encontró ninguna cuenta con ese correo.");
-
-        // NOTA: el siguiente bloque redirige al login después de 5 seg.
-      
-      setTimeout(() => {
-      window.location.href = "login.html";
-      }, 5000);
-
-      }
-
-      // ============================================================
-      // SIMULACIÓN DEL ENVÍO DE CORREO DE RECUPERACIÓN
-      // Aquí solo mostramos un mensaje; en un sistema real se enviaría
-      // un correo con un enlace de restablecimiento seguro.
-      // ============================================================
-      LinguaGo.toast(`Se ha enviado un enlace de recuperación a: ${email}`);
+      // Por ahora, aceptamos cualquier email y mostramos el mensaje de éxito
+      // En producción, aquí se haría una llamada al servidor para verificar
+      showToast(`Se ha enviado un enlace de recuperación a: ${email}`, "success");
 
       // Guardar correo temporalmente para usarlo en reset-password.html
       localStorage.setItem("recoverEmail", email);
 
-      // Redirigir al formulario de restablecimiento
-      window.location.href = "reset-password.html";
-  
+      // Redirigir al formulario de restablecimiento después de 2 segundos
+      setTimeout(() => {
+        window.location.href = "reset-password.html";
+      }, 2000);
 
     } catch (err) {
       // Error de conexión o similar
       console.error(err);
-      LinguaGo.toast("Error al conectar con el servidor.");
+      showToast("Error al conectar con el servidor", "error");
     }
   });
 }
-

@@ -930,10 +930,11 @@ body {
 .lg-register-illustration img {
   width: 100%;
   max-width: 500px;
+  margin-top: 5%;
 }
 
 .lg-register-logo {
-  margin-top: .8rem;
+  margin-top: .5rem;
   color: var(--lg-accent-2);
 }
 
@@ -1387,16 +1388,18 @@ body {
 }
 
 .linguago-forgot-image {
-  flex: 1 1 380px;
+  flex: 1 1 180px;
   text-align: center;
   position: relative;
   padding: 1rem;
 }
 
 .linguago-forgot-image img {
-  max-width: 90%;
   height: auto;
+  width: 100%;
+  max-width: 450px;
   border-radius: 8px;
+  box-shadow: var(--lg-shadow);
 }
 
 .linguago-color-options {

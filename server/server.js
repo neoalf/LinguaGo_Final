@@ -154,9 +154,9 @@ app.patch("/api/users/:id", (req, res) => {
   try {
     // Validaciones
     if (!name || name.trim().length < 2) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "El nombre debe tener al menos 2 caracteres" 
+      return res.status(400).json({
+        success: false,
+        message: "El nombre debe tener al menos 2 caracteres"
       });
     }
 
@@ -177,6 +177,52 @@ app.patch("/api/users/:id", (req, res) => {
     res.json({ success: true, user: updatedUser });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error al actualizar perfil" });
+  }
+});
+
+// ===== RESETEAR CONTRASEÑA =====
+app.post("/api/reset-password", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Validar que vengan los datos
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email y contraseña son requeridos"
+      });
+    }
+
+    // Validar longitud de contraseña
+    if (password.length < 8) {
+      return res.status(400).json({
+        success: false,
+        message: "La contraseña debe tener al menos 8 caracteres"
+      });
+    }
+
+    // Buscar usuario por email
+    const userStmt = db.prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
+    const user = userStmt.get(email);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "No existe una cuenta con ese correo"
+      });
+    }
+
+    // Encriptar nueva contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Actualizar contraseña
+    const updateStmt = db.prepare("UPDATE users SET password = ? WHERE email = ?");
+    updateStmt.run(hashedPassword, email);
+
+    res.json({ success: true, message: "Contraseña actualizada correctamente" });
+  } catch (error) {
+    console.error("Error al resetear contraseña:", error);
+    res.status(500).json({ success: false, message: "Error al actualizar la contraseña" });
   }
 });
 

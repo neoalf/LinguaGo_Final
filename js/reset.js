@@ -20,13 +20,13 @@ if (resetForm) {
 
     // Validación de longitud mínima
     if (password.length < 8) {
-      LinguaGo.toast("La contraseña debe tener al menos 8 caracteres.");
+      showToast("La contraseña debe tener al menos 8 caracteres", "warning");
       return;
     }
 
     // Validación de coincidencia
     if (password !== confirm) {
-      LinguaGo.toast("Las contraseñas no coinciden.");
+      showToast("Las contraseñas no coinciden", "warning");
       return;
     }
 
@@ -39,54 +39,46 @@ if (resetForm) {
     const email = localStorage.getItem("recoverEmail");
 
     if (!email) {
-      LinguaGo.toast("No se encontró información de recuperación. Intenta nuevamente.");
-      window.location.href = "forgot-password.html";
+      showToast("No se encontró información de recuperación. Intenta nuevamente", "error");
+      setTimeout(() => {
+        window.location.href = "forgot-password.html";
+      }, 2000);
       return;
     }
 
     try {
       // ============================================================
-      // BUSCAR USUARIO POR EMAIL
-      // GET /users?email=<correo>
+      // ACTUALIZAR CONTRASEÑA EN EL SERVIDOR
+      // POST /api/reset-password
       // ============================================================
-      const res = await fetch(`${LinguaGo.API_BASE}/users?email=${email}`);
-      const users = await res.json();
-
-      if (users.length === 0) {
-        LinguaGo.toast("No existe una cuenta con ese correo.");
-        return;
-      }
-
-      const user = users[0];
-
-      // ============================================================
-      // ACTUALIZAR CONTRASEÑA
-      // JSON Server permite PATCH para modificar solo un campo.
-      // ============================================================
-      const update = await fetch(`${LinguaGo.API_BASE}/users/${user.id}`, {
-        method: "PATCH",
+      const response = await fetch("http://localhost:4000/api/reset-password", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }) //Nueva pass
+        body: JSON.stringify({ email, password })
       });
+
+      const data = await response.json();
 
       // ============================================================
       // RESPUESTAS
       // ============================================================
-      if (update.ok) {
-        LinguaGo.toast("Contraseña actualizada correctamente.");
+      if (data.success) {
+        showToast("Contraseña actualizada correctamente", "success");
 
         // Limpiar dato temporal de recuperación
         localStorage.removeItem("recoverEmail");
 
-        // Redirigir al login
-        window.location.href = "login.html";
+        // Redirigir al login después de 2 segundos
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2000);
       } else {
-        LinguaGo.toast("Error al actualizar la contraseña.");
+        showToast(data.message || "Error al actualizar la contraseña", "error");
       }
 
     } catch (err) {
       console.error(err);
-      LinguaGo.toast("Error de conexión con el servidor.");
+      showToast("Error de conexión con el servidor", "error");
     }
   });
 }
