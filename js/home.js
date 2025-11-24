@@ -21,7 +21,7 @@ const Model = (function () {
         quote: "Las clases son dinámicas y prácticas. Pude mejorar mi pronunciación en pocas semanas.",
         name: "Diego Méndez",
         meta: "Estudiante, Costa Rica",
-        avatar: "assets/img/Diego-Mendez.png"
+        avatar: "assets/img/Diego-Mendez.jpeg"
       },
       {
         quote: "Aprender francés fue mucho más divertido de lo que imaginaba. ¡LinguaGo me ayudó a hacerlo fácil y entretenido!",
