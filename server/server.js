@@ -146,6 +146,40 @@ app.patch("/api/progress/:id", (req, res) => {
   res.json({ success: true });
 });
 
+// ===== ACTUALIZAR DATOS DEL USUARIO =====
+app.patch("/api/users/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, country, avatar } = req.body;
+
+  try {
+    // Validaciones
+    if (!name || name.trim().length < 2) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "El nombre debe tener al menos 2 caracteres" 
+      });
+    }
+
+    const stmt = db.prepare(`
+      UPDATE users SET 
+        name = ?, 
+        country = ?,
+        avatar = ?
+      WHERE id = ?
+    `);
+
+    stmt.run(name.trim(), country || "", avatar || "assets/img/default-avatar-profile-icon.jpg", id);
+
+    // Obtener usuario actualizado
+    const userStmt = db.prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
+    const updatedUser = userStmt.get(id);
+
+    res.json({ success: true, user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error al actualizar perfil" });
+  }
+});
+
 // Servir FRONTEND
 app.use(express.static("../"));
 

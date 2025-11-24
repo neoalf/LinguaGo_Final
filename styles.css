@@ -2390,3 +2390,203 @@ body {
 .lg-dashboard-banner-text p {
   color: #555;
 }
+
+/* ============================================================
+   PROFILE PAGE - EDITABLE
+   ============================================================ */
+
+.lg-profile-header {
+  background: var(--lg-white);
+  padding: 1.5rem 2rem;
+  box-shadow: var(--lg-shadow);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.lg-profile-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2rem;
+  color: var(--lg-accent-2);
+  margin-bottom: 0.5rem;
+}
+
+.lg-back-dashboard {
+  color: var(--lg-accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.lg-back-dashboard:hover {
+  color: var(--lg-accent-2);
+}
+
+.lg-profile-basic-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.lg-profile-card {
+  background: var(--lg-white);
+  border-radius: var(--lg-radius);
+  box-shadow: var(--lg-shadow);
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.lg-profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--lg-accent-2);
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s;
+}
+
+.lg-profile-avatar:hover {
+  transform: scale(1.05);
+}
+
+.lg-profile-name {
+  font-size: 1.8rem;
+  color: var(--lg-accent-2);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.lg-profile-email {
+  color: var(--lg-muted);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.lg-profile-country {
+  color: var(--lg-muted);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.lg-profile-separator {
+  border: 0;
+  height: 1px;
+  background: #eee;
+  margin: 1.5rem 0;
+}
+
+/* Formulario de Edición */
+.lg-profile-form-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.lg-profile-label {
+  display: block;
+  font-weight: 600;
+  color: var(--lg-accent-2);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.lg-profile-input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.lg-profile-input:focus {
+  outline: none;
+  border-color: #7eb775;
+  box-shadow: 0 0 0 3px rgba(126, 183, 117, 0.1);
+}
+
+.lg-profile-input:hover {
+  border-color: #aaa;
+}
+
+.lg-profile-hint {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--lg-muted);
+}
+
+/* Botones de Acción */
+.lg-profile-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.lg-btn-edit,
+.lg-btn-save,
+.lg-btn-cancel {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.lg-btn-edit {
+  background: var(--lg-accent-2);
+  color: white;
+}
+
+.lg-btn-edit:hover {
+  background: var(--lg-cta);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lg-btn-save {
+  background: #4caf50;
+  color: white;
+}
+
+.lg-btn-save:hover {
+  background: #388e3c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.lg-btn-cancel {
+  background: #f44336;
+  color: white;
+}
+
+.lg-btn-cancel:hover {
+  background: #c62828;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+/* Responsive para profile editable */
+@media (max-width: 768px) {
+  .lg-profile-card {
+    padding: 1.5rem;
+  }
+
+  .lg-profile-actions {
+    flex-direction: column;
+  }
+
+  .lg-btn-edit,
+  .lg-btn-save,
+  .lg-btn-cancel {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi Perfil – LinguaGo</title>
 
+  <link rel="stylesheet" href="assets/fonts/fontawesome/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
-  <script defer src="profile-basic.js"></script>
 </head>
 
 <body class="lg-body">
@@ -22,11 +23,34 @@
 
     <div class="lg-profile-card">
 
-      <img id="profileAvatar" class="lg-profile-avatar" src="assets/img/default-avatar-profile-icon.jpg" alt="Avatar Usuario">
+      <img id="profileAvatar" class="lg-profile-avatar" src="assets/img/default-avatar-profile-icon.jpg"
+        alt="Avatar Usuario">
 
-      <h2 id="profileName" class="lg-profile-name">Nombre del usuario</h2>
-      <p id="profileEmail" class="lg-profile-email">correo@ejemplo.com</p>
-      <p id="profileCountry" class="lg-profile-country">País: —</p>
+      <!-- Modo Vista -->
+      <div id="viewMode">
+        <h2 id="profileName" class="lg-profile-name">Nombre del usuario</h2>
+        <p id="profileEmail" class="lg-profile-email">correo@ejemplo.com</p>
+        <p id="profileCountry" class="lg-profile-country">País: —</p>
+      </div>
+
+      <!-- Modo Edición -->
+      <div id="editMode" style="display: none;">
+        <div class="lg-profile-form-group">
+          <label for="editName" class="lg-profile-label">Nombre</label>
+          <input type="text" id="editName" class="lg-profile-input" placeholder="Tu nombre completo">
+        </div>
+
+        <div class="lg-profile-form-group">
+          <label for="editCountry" class="lg-profile-label">País</label>
+          <input type="text" id="editCountry" class="lg-profile-input" placeholder="Tu país">
+        </div>
+
+        <div class="lg-profile-form-group">
+          <label for="editAvatar" class="lg-profile-label">Avatar (URL)</label>
+          <input type="url" id="editAvatar" class="lg-profile-input" placeholder="URL de tu avatar">
+          <small class="lg-profile-hint">Correo: <span id="displayEmail"></span> (no editable)</small>
+        </div>
+      </div>
 
       <hr class="lg-profile-separator">
 
@@ -37,7 +61,22 @@
       </div>
       <p id="profileProgressText" class="lg-progress-text">0% completado</p>
 
-      <button id="logoutBtn" class="lg-btn-logout">Cerrar Sesión</button>
+      <!-- Botones de Acción -->
+      <div class="lg-profile-actions">
+        <button id="editBtn" class="lg-btn-edit">
+          <i class="fas fa-edit"></i> Editar Perfil
+        </button>
+        <button id="saveBtn" class="lg-btn-save" style="display: none;">
+          <i class="fas fa-save"></i> Guardar Cambios
+        </button>
+        <button id="cancelBtn" class="lg-btn-cancel" style="display: none;">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+      </div>
+
+      <button id="logoutBtn" class="lg-btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
 
     </div>
 
@@ -53,8 +92,12 @@
     </div>
   </footer>
 
+  <!-- Contenedor de notificaciones -->
+  <div id="toast-container" class="linguago-toast-container"></div>
+
   <script src="js/core.js"></script>
   <script src="js/profile.js"></script>
 
 </body>
+
 </html>
