@@ -1,16 +1,47 @@
+/* ============================================================
+   server.js - Servidor Backend de LinguaGo
+   ============================================================
+   
+   TECNOLOGÍAS:
+   - Express: Framework web para Node.js
+   - SQLite (better-sqlite3): Base de datos local
+   - bcrypt: Encriptación de contraseñas
+   - Google OAuth2: Autenticación con Google
+   - CORS: Permite peticiones desde el frontend
+   
+   FUNCIONALIDADES:
+   - Registro e inicio de sesión de usuarios
+   - Autenticación con Google
+   - Gestión de perfiles de usuario
+   - Seguimiento de progreso por idioma
+   - Recuperación y restablecimiento de contraseñas
+   - Eliminación de cuentas
+   ============================================================ */
+
+// ============================================================
+// IMPORTACIÓN DE DEPENDENCIAS
+// ============================================================
 const express = require("express");
 const cors = require("cors");
 const Database = require("better-sqlite3");
 const bcrypt = require("bcrypt");
 
+// ============================================================
+// CONFIGURACIÓN DEL SERVIDOR EXPRESS
+// ============================================================
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // Permite peticiones desde cualquier origen
+app.use(express.json()); // Permite recibir JSON en el body de las peticiones
 
+// ============================================================
+// CONEXIÓN A LA BASE DE DATOS SQLITE
+// ============================================================
 const db = new Database("database.db");
 
-// ===== INICIALIZAR BASE DE DATOS =====
-// Crear tabla de usuarios si no existe
+// ============================================================
+// INICIALIZAR BASE DE DATOS
+// Crea la tabla de usuarios si no existe
+// ============================================================
 db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +61,11 @@ db.exec(`
 console.log("Base de datos inicializada correctamente");
 
 
-// ===== REGISTRO =====
+// ============================================================
+// ENDPOINT: REGISTRO DE NUEVOS USUARIOS
+// POST /api/register
+// ============================================================
+// Crea una nueva cuenta de usuario con contraseña encriptada
 app.post("/api/register", async (req, res) => {
   const {
     name,
@@ -41,42 +76,62 @@ app.post("/api/register", async (req, res) => {
   } = req.body;
 
   try {
-    // Hash de la contraseña con bcrypt (10 salt rounds)
+    // ============================================================
+    // SEGURIDAD: Hash de la contraseña con bcrypt
+    // Se usa 10 salt rounds para un balance entre seguridad y rendimiento
+    // ============================================================
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Preparar consulta SQL para insertar usuario
     const stmt = db.prepare(`
       INSERT INTO users (name, email, password, country, avatar)
       VALUES (?, ?, ?, ?, ?)
     `);
 
+    // Ejecutar inserción con contraseña hasheada
     stmt.run(name, email, hashedPassword, country, avatar);
 
     res.json({ success: true, message: "Usuario registrado" });
   } catch (error) {
+    // Error típico: email duplicado (UNIQUE constraint)
     res.status(400).json({ success: false, message: "Correo ya registrado" });
   }
 });
 
-// ===== LOGIN =====
+// ============================================================
+// ENDPOINT: INICIO DE SESIÓN
+// POST /api/login
+// ============================================================
+// Verifica credenciales y devuelve datos del usuario
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
+  // Buscar usuario por email
   const stmt = db.prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
   const user = stmt.get(email);
 
+  // Verificar si el usuario existe
   if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
 
-  // Verificar contraseña hasheada con bcrypt
+  // ============================================================
+  // SEGURIDAD: Verificar contraseña hasheada con bcrypt
+  // bcrypt.compare() compara la contraseña en texto plano con el hash
+  // ============================================================
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
     return res.status(401).json({ message: "Contraseña incorrecta" });
   }
 
+  // Login exitoso: devolver datos del usuario
   res.json(user);
 });
 
-// ===== GOOGLE LOGIN =====
+// ============================================================
+// ENDPOINT: AUTENTICACIÓN CON GOOGLE
+// POST /api/auth/google
+// ============================================================
+// Verifica el token de Google y registra/loguea al usuario
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client("1020252781524-ofd58tkv7rpuvles3odrlb3mltjpgrgb.apps.googleusercontent.com");
 
@@ -87,6 +142,10 @@ app.post("/api/auth/google", async (req, res) => {
   console.log("Token recibido:", token ? `${token.substring(0, 50)}...` : "NO HAY TOKEN");
 
   try {
+    // ============================================================
+    // VERIFICAR TOKEN DE GOOGLE
+    // Google OAuth2 verifica que el token sea válido y no haya sido manipulado
+    // ============================================================
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: "1020252781524-ofd58tkv7rpuvles3odrlb3mltjpgrgb.apps.googleusercontent.com",
@@ -96,14 +155,19 @@ app.post("/api/auth/google", async (req, res) => {
     const { email, name, picture } = payload;
     console.log("Usuario de Google:", { email, name });
 
-    // Buscar usuario en DB
+    // Buscar si el usuario ya existe en la base de datos
     const stmt = db.prepare("SELECT * FROM users WHERE email = ? LIMIT 1");
     let user = stmt.get(email);
 
     if (!user) {
       console.log("Usuario no existe, registrando automáticamente...");
-      // Si no existe, lo registramos automáticamente
+
+      // ============================================================
+      // REGISTRO AUTOMÁTICO DE USUARIOS DE GOOGLE
+      // Si es la primera vez que inicia sesión, se crea su cuenta
+      // ============================================================
       // Hash de contraseña dummy para usuarios de Google
+      // (no usarán contraseña, solo Google OAuth)
       const hashedDummyPassword = await bcrypt.hash("GOOGLE_AUTH_USER", 10);
 
       const insert = db.prepare(`
@@ -117,6 +181,7 @@ app.post("/api/auth/google", async (req, res) => {
       console.log("Usuario ya existe en BD");
     }
 
+    // Devolver datos del usuario
     res.json(user);
 
   } catch (error) {
@@ -128,7 +193,11 @@ app.post("/api/auth/google", async (req, res) => {
   }
 });
 
-// ===== ACTUALIZAR PROGRESO =====
+// ============================================================
+// ENDPOINT: ACTUALIZAR PROGRESO DE IDIOMAS
+// PATCH /api/progress/:id
+// ============================================================
+// Actualiza el progreso del usuario en los 3 idiomas
 app.patch("/api/progress/:id", (req, res) => {
   const { id } = req.params;
   const { progressEnglish, progressFrench, progressRussian } = req.body;
@@ -146,13 +215,19 @@ app.patch("/api/progress/:id", (req, res) => {
   res.json({ success: true });
 });
 
-// ===== ACTUALIZAR DATOS DEL USUARIO =====
+// ============================================================
+// ENDPOINT: ACTUALIZAR DATOS DEL PERFIL
+// PATCH /api/users/:id
+// ============================================================
+// Permite al usuario actualizar su nombre, país y avatar
 app.patch("/api/users/:id", (req, res) => {
   const { id } = req.params;
   const { name, country, avatar } = req.body;
 
   try {
-    // Validaciones
+    // ============================================================
+    // VALIDACIÓN: Nombre debe tener al menos 2 caracteres
+    // ============================================================
     if (!name || name.trim().length < 2) {
       return res.status(400).json({
         success: false,
@@ -160,6 +235,7 @@ app.patch("/api/users/:id", (req, res) => {
       });
     }
 
+    // Preparar y ejecutar actualización
     const stmt = db.prepare(`
       UPDATE users SET 
         name = ?, 
@@ -170,7 +246,7 @@ app.patch("/api/users/:id", (req, res) => {
 
     stmt.run(name.trim(), country || "", avatar || "assets/img/default-avatar-profile-icon.jpg", id);
 
-    // Obtener usuario actualizado
+    // Obtener y devolver usuario actualizado
     const userStmt = db.prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
     const updatedUser = userStmt.get(id);
 
@@ -180,12 +256,18 @@ app.patch("/api/users/:id", (req, res) => {
   }
 });
 
-// ===== RESETEAR CONTRASEÑA =====
+// ============================================================
+// ENDPOINT: RESTABLECER CONTRASEÑA
+// POST /api/reset-password
+// ============================================================
+// Permite al usuario cambiar su contraseña olvidada
 app.post("/api/reset-password", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Validar que vengan los datos
+    // ============================================================
+    // VALIDACIONES
+    // ============================================================
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -193,7 +275,6 @@ app.post("/api/reset-password", async (req, res) => {
       });
     }
 
-    // Validar longitud de contraseña
     if (password.length < 8) {
       return res.status(400).json({
         success: false,
@@ -212,10 +293,12 @@ app.post("/api/reset-password", async (req, res) => {
       });
     }
 
-    // Encriptar nueva contraseña
+    // ============================================================
+    // SEGURIDAD: Encriptar nueva contraseña con bcrypt
+    // ============================================================
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Actualizar contraseña
+    // Actualizar contraseña en la base de datos
     const updateStmt = db.prepare("UPDATE users SET password = ? WHERE email = ?");
     updateStmt.run(hashedPassword, email);
 
@@ -226,12 +309,16 @@ app.post("/api/reset-password", async (req, res) => {
   }
 });
 
-// ===== ELIMINAR CUENTA DE USUARIO =====
+// ============================================================
+// ENDPOINT: ELIMINAR CUENTA DE USUARIO
+// DELETE /api/users/:id
+// ============================================================
+// Elimina permanentemente la cuenta del usuario
 app.delete("/api/users/:id", (req, res) => {
   const { id } = req.params;
 
   try {
-    // Verificar que el usuario existe
+    // Verificar que el usuario existe antes de eliminar
     const userStmt = db.prepare("SELECT * FROM users WHERE id = ? LIMIT 1");
     const user = userStmt.get(id);
 
@@ -242,7 +329,7 @@ app.delete("/api/users/:id", (req, res) => {
       });
     }
 
-    // Eliminar usuario
+    // Eliminar usuario de la base de datos
     const deleteStmt = db.prepare("DELETE FROM users WHERE id = ?");
     deleteStmt.run(id);
 
@@ -259,9 +346,15 @@ app.delete("/api/users/:id", (req, res) => {
   }
 });
 
-// Servir FRONTEND
+// ============================================================
+// SERVIR ARCHIVOS ESTÁTICOS DEL FRONTEND
+// Permite acceder a HTML, CSS, JS e imágenes desde el servidor
+// ============================================================
 app.use(express.static("../"));
 
+// ============================================================
+// INICIAR SERVIDOR EN EL PUERTO 4000
+// ============================================================
 app.listen(4000, () => {
   console.log("Servidor SQLite ejecutándose en http://localhost:4000");
 });

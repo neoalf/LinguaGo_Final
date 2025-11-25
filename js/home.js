@@ -1,14 +1,27 @@
 /**
+ * ============================================================
+ * home.js - Página principal de LinguaGo
+ * ============================================================
  * Controla testimonios, carrusel de idiomas y botón volver arriba.
  * Implementación con patrón MVC para mantener orden y separación de responsabilidades.
+ * 
+ * ARQUITECTURA:
+ * - Model: Maneja los datos (testimonios) y su persistencia en localStorage
+ * - View: Renderiza los elementos visuales en el DOM
+ * - Controller: Coordina la lógica de negocio y eventos
  */
 
-// ================== MODELO ==================
+// ============================================================
+// MODELO (MODEL) - Capa de datos
+// ============================================================
+// Maneja el estado de la aplicación y la persistencia de datos.
+// Los testimonios se guardan en localStorage para mantener consistencia.
 const Model = (function () {
   // Clave para almacenar datos en localStorage
   const STORAGE_KEY = "lg_data_v1";
 
   // Estado inicial (primer uso de la app)
+  // Contiene los testimonios de usuarios satisfechos con LinguaGo
   const initialState = {
     testimonials: [
       {
@@ -32,7 +45,10 @@ const Model = (function () {
     ]
   };
 
-  // Carga estado desde localStorage o inicializa si no existe
+  /**
+   * Carga el estado desde localStorage o inicializa si no existe
+   * @returns {Object} Estado de la aplicación con testimonios
+   */
   function load() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
@@ -42,6 +58,7 @@ const Model = (function () {
 
   const state = load();
 
+  // API pública del modelo
   return {
     getTestimonials: () => state.testimonials
   };
@@ -49,13 +66,21 @@ const Model = (function () {
 
 
 
-// ================== VISTA ==================
+// ============================================================
+// VISTA (VIEW) - Capa de presentación
+// ============================================================
+// Responsable de renderizar elementos en el DOM.
+// No contiene lógica de negocio, solo presentación visual.
 const View = (function () {
 
-  // Renderiza un testimonio dentro de un contenedor
+  /**
+   * Renderiza un testimonio dentro de un contenedor
+   * @param {HTMLElement} container - Elemento donde se renderizará el testimonio
+   * @param {Object} data - Datos del testimonio (quote, name, meta, avatar)
+   */
   function renderTestimonial(container, data) {
     container.innerHTML = `
-      <blockquote class="lg-test-quote">“${escapeHTML(data.quote)}”</blockquote>
+      <blockquote class="lg-test-quote">"${escapeHTML(data.quote)}"</blockquote>
       <div class="lg-test-author">
         <img src="${data.avatar}" class="lg-test-avatar" alt="Avatar ${data.name}">
         <div>
@@ -67,38 +92,54 @@ const View = (function () {
     `;
   }
 
-  // Sanitiza texto para evitar inyección HTML (RNF12)
+  /**
+   * Sanitiza texto para evitar inyección HTML (XSS)
+   * Reemplaza caracteres especiales por sus entidades HTML
+   * @param {string} str - Texto a sanitizar
+   * @returns {string} Texto seguro para insertar en HTML
+   */
   function escapeHTML(str) {
     return str.replace(/[&<>"']/g, m => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
     }[m]));
   }
 
+  // API pública de la vista
   return { renderTestimonial };
 })();
 
 
 
-// ================== CONTROLADOR ==================
+// ============================================================
+// CONTROLADOR (CONTROLLER) - Capa de lógica de negocio
+// ============================================================
+// Coordina el flujo de datos entre el Modelo y la Vista.
+// Maneja eventos del usuario y actualiza la interfaz.
 const Controller = (function (Model, View) {
 
   const testimonials = Model.getTestimonials();
-  let current = 0; // Testimonio actual mostrado
+  let current = 0; // Índice del testimonio actual mostrado
 
-  // Función principal de inicialización
+  /**
+   * Función principal de inicialización
+   * Se ejecuta cuando el DOM está listo
+   */
   function init() {
     const testCard = document.getElementById("js-test-card");
     const dotsContainer = document.getElementById("js-test-dots");
     const btnTop = document.getElementById("js-btn-top");
 
-    // Render inicial del primer testimonio
+    // Renderizar el primer testimonio
     View.renderTestimonial(testCard, testimonials[current]);
     renderDots();
 
-    // Cambio automático cada 5 segundos
+    // Cambio automático de testimonio cada 5 segundos
     setInterval(() => nextTestimonial(), 5000);
 
-    // Clic en los dots para cambiar testimonio
+    // ============================================================
+    // EVENTO: Clic en los dots (puntos de navegación)
+    // Permite al usuario cambiar manualmente de testimonio
+    // ============================================================
     dotsContainer.addEventListener("click", e => {
       if (e.target.classList.contains("lg-dot")) {
         current = Number(e.target.dataset.index);
@@ -106,26 +147,38 @@ const Controller = (function (Model, View) {
       }
     });
 
-    // Mostrar / ocultar botón "Volver arriba"
+    // ============================================================
+    // EVENTO: Scroll de la página
+    // Muestra/oculta el botón "Volver arriba" según la posición
+    // ============================================================
     window.addEventListener("scroll", () => {
       if (window.scrollY > 300) btnTop.classList.add("show");
       else btnTop.classList.remove("show");
     });
 
+    // ============================================================
+    // EVENTO: Clic en botón "Volver arriba"
+    // Hace scroll suave hacia el inicio de la página
+    // ============================================================
     btnTop.addEventListener("click", () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Auto-scroll del carrusel de idiomas
+    // Iniciar carrusel automático de idiomas
     autoScrollLanguages();
 
 
-    // ===== Menú hamburguesa (overlay lateral) =====
+    // ============================================================
+    // NOTA: Menú hamburguesa (overlay lateral)
     // Se maneja en core.js para todo el sitio.
+    // ============================================================
 
 
 
-    // ===== Llamada a la acción: "Iniciar ahora" =====
+    // ============================================================
+    // EVENTO: Botón "Iniciar ahora" (Call to Action)
+    // Redirige al usuario a la página de login
+    // ============================================================
     const startBtn = document.getElementById("js-cta");
     if (startBtn) {
       startBtn.addEventListener("click", (e) => {
@@ -134,7 +187,10 @@ const Controller = (function (Model, View) {
       });
     }
 
-    // ===== Botones del carrusel de idiomas =====
+    // ============================================================
+    // EVENTO: Botones del carrusel de idiomas
+    // Todos redirigen al login para que el usuario se registre
+    // ============================================================
     const langButtons = document.querySelectorAll(".lg-lang-btn");
     langButtons.forEach(btn => {
       btn.addEventListener("click", (e) => {
@@ -144,7 +200,10 @@ const Controller = (function (Model, View) {
     });
   }
 
-  // Renderiza los botones de navegación (dots)
+  /**
+   * Renderiza los botones de navegación (dots) para los testimonios
+   * Crea un punto por cada testimonio disponible
+   */
   function renderDots() {
     const dotsContainer = document.getElementById("js-test-dots");
     dotsContainer.innerHTML = "";
@@ -156,25 +215,35 @@ const Controller = (function (Model, View) {
     });
   }
 
-  // Avanza al siguiente testimonio
+  /**
+   * Avanza al siguiente testimonio
+   * Usa módulo (%) para volver al inicio al llegar al final
+   */
   function nextTestimonial() {
     current = (current + 1) % testimonials.length;
     updateTestimonial();
   }
 
-  // Actualiza testimonio y estado visual de los dots
+  /**
+   * Actualiza el testimonio mostrado y el estado visual de los dots
+   * Sincroniza la vista con el estado actual
+   */
   function updateTestimonial() {
     const testCard = document.getElementById("js-test-card");
     const dots = document.querySelectorAll(".lg-dot");
 
     View.renderTestimonial(testCard, testimonials[current]);
 
+    // Actualizar estado activo de los dots
     dots.forEach((d, i) =>
       d.classList.toggle("lg-dot--active", i === current)
     );
   }
 
-  // Carrusel automático horizontal para tarjetas de idiomas
+  /**
+   * Carrusel automático horizontal para tarjetas de idiomas
+   * Hace scroll automático cada 4 segundos
+   */
   function autoScrollLanguages() {
     const carousel = document.getElementById("js-lang-carousel");
     if (!carousel) return;
@@ -193,11 +262,14 @@ const Controller = (function (Model, View) {
     }, 4000);
   }
 
+  // API pública del controlador
   return { init };
 
 })(Model, View);
 
 
-// ================== INICIO ==================
-// Se ejecuta al cargar la página
+// ============================================================
+// INICIO DE LA APLICACIÓN
+// ============================================================
+// Se ejecuta cuando el DOM está completamente cargado
 document.addEventListener("DOMContentLoaded", Controller.init);
