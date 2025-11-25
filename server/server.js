@@ -30,7 +30,20 @@ const bcrypt = require("bcrypt");
 // CONFIGURACIÓN DEL SERVIDOR EXPRESS
 // ============================================================
 const app = express();
-app.use(cors()); // Permite peticiones desde cualquier origen
+// CORS configuracion para mobile y web app
+app.use(cors({
+  origin: [
+    'http://localhost:4000',       // Web API
+    'http://localhost:8100',       // Ionic dev server
+    'http://localhost:8101',       // Ionic dev server (otro)
+    'capacitor://localhost',       // iOS Capacitor
+    'ionic://localhost',           // Android Capacitor
+    'http://localhost',            // localhost general
+    'http://localhost:3000',       // localhost alternativo
+    'http://127.0.0.1:5500',       // otro localhost alternativo
+  ],
+  credentials: true
+}));
 app.use(express.json()); // Permite recibir JSON en el body de las peticiones
 
 // ============================================================
